@@ -3,14 +3,19 @@ package com.example.praktikum7.view.uicontroller
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.praktikum7.model.DataJK.JenisK
 import com.example.praktikum7.view.FormIsian
 import com.example.praktikum7.view.TampilData
+import com.example.praktikum7.viewmodel.SiswaViewModel
 
 
 enum class Navigasi {
@@ -19,28 +24,32 @@ enum class Navigasi {
 }
 
 @Composable
-fun DataApp(
-    navController: NavHostController = rememberNavController(),
-    modifier: Modifier
+fun SiswaApp(
+    modifier: Modifier,
+    viewModel: SiswaViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()
 ){
     Scaffold { isiRuang->
+        val uiState = viewModel.statusUI.collectAsState()
         NavHost(
             navController = navController,
             startDestination = Navigasi.Formulirku.name,
             modifier = Modifier.padding(isiRuang))
         {
             composable(route = Navigasi.Formulirku.name){
+                val konteks = LocalContext.current
                 FormIsian(
+                    pilihanJK = JenisK.map{id -> konteks.resources.getString(id) },
                     onSubmitBtnClick = {
+                        viewModel.setSiswa(it)
                         navController.navigate(Navigasi.Detail.name)
                     }
                 )
             }
             composable (route = Navigasi.Detail.name){
                 TampilData(
-                    onBackBtnClick = {
-                        cancelAndBackToFormulirku(navController)
-                    }
+                    statusUiSiswa = uiState.value,
+                    onBackBtnClick = {cancelAndBackToFormulirku(navController)}
                 )
             }
         }
