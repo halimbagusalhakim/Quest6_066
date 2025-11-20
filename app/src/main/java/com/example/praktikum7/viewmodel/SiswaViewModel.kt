@@ -9,7 +9,11 @@ class SiswaViewModel : viewmodel() {
     val statusUI: StateFlow<Siswa> = _statusUI.asStateFlow()
 
     fun setSiswa(ls:MutableList<String>){
-
+        _statusUI.update {statusSaatIni ->
+            statusSaatIni.copy(
+                nama = ls[0],
+            )
+        }
     }
 
 
