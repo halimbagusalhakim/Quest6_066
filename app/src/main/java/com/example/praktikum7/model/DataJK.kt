@@ -1,0 +1,9 @@
+package com.example.praktikum7.model
+
+import com.example.praktikum7.R
+
+object DataJK {
+    val JenisK = listOf(
+
+    )
+}
