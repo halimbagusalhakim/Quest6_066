@@ -113,11 +113,14 @@ fun FormIsian(
                 color = Color.Red
             )
             OutlinedTextField(
-                value = "",
+                value = txtAlamat,
                 singleLine = true,
+                shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.width(250.dp),
-                label = {Text(text = "Alamat")},
-                onValueChange = {},
+                label = {Text(text = "Alamat Lengkap")},
+                onValueChange = {
+                    txtAlamat = it
+                },
             )
             Spacer(modifier = Modifier.height(30.dp))
             Button(
